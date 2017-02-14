@@ -163,21 +163,16 @@ def custom_score_v3(a, b, c):
 
     def custom_score(game, player):
 
-        blank_spaces = len(game.get_blank_spaces())
-
-        if blank_spaces > 35:
-            return 0.
-
         if game.is_loser(player):
             return float("-inf")
 
         if game.is_winner(player):
             return float("inf")
 
+        blank_spaces = len(game.get_blank_spaces())
         my_legal_moves = len(game.get_legal_moves(player=player))
         opponent_legal_moves = len(game.get_legal_moves(player=game.get_opponent(player)))
-
-        return float(my_legal_moves * a + opponent_legal_moves * b + blank_spaces * c)
+        return float(my_legal_moves*a / (opponent_legal_moves*b + 1e-5) / (blank_spaces*c + 1e-5))
 
     return custom_score
 
@@ -208,9 +203,7 @@ def custom_score_KERAS(game, player, model):
     return my_reward
 
 
-# custom_score = custom_score_v1
-# W1=6.05, W2=-5.79, W3=3.56,
-custom_score = custom_score_v3(6.05, -5.79, 3.56)
+custom_score = custom_score_v3(0.9109905965646489, 0.47001586579228216, 0.16690185540812202)
 # custom_score_CNN = custom_score_KERAS
 
 
@@ -296,8 +289,6 @@ class CustomPlayer:
 
         self.time_left = time_left
 
-        # TODO: finish this function!
-
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
@@ -317,13 +308,14 @@ class CustomPlayer:
             else:
                 raise Exception("Unknown Method")
 
+            i = 1
             if self.iterative:
-                i = 1
                 while True:
                     _, loc = fn(game, i)
                     i += 1
             else:
                 _, loc = fn(game, self.search_depth)
+
             return loc
 
         except Timeout:

@@ -299,7 +299,7 @@ class Board(object):
 
         return out
 
-    def play(self, time_limit=TIME_LIMIT_MILLIS):
+    def play(self, time_limit=TIME_LIMIT_MILLIS, test=False):
         """
         Execute a match between the players by alternately soliciting them
         to select a move and applying it in the game.

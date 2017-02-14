@@ -1,0 +1,2 @@
+Agent 1: Avg Depth:7.29455, Max Depth: 1223, Min Depth: 5, Len: 20000
+Agent 2: Avg Depth:6.94345, Max Depth: 1157, Min Depth: 5, Len: 20000
